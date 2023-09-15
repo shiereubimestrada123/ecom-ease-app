@@ -4,13 +4,14 @@ import {
   Route,
 } from 'react-router-dom';
 import { App } from '@App';
-import { HomePage, AboutPage } from '@pages';
+import { HomePage, AboutPage, ShopPage } from '@pages';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route path='/' element={<HomePage />} />
       <Route path='about' element={<AboutPage />} />
+      <Route path='shop' element={<ShopPage />} />
     </Route>
   )
 );

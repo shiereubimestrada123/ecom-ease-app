@@ -29,15 +29,15 @@ export function NavigationBar() {
   ];
 
   return (
-    <nav>
+    <nav className='shadow-md'>
       <div className='md:flex justify-between bg-[#212934] min-h-[40px] hidden text-[#cfd6e1] md:px-20'>
-        <div className='flex items-center md:gap-2 gap-1'>
+        <div className='flex items-center gap-1 md:gap-2'>
           <BsFillEnvelopeFill />
           <p>info@company.com </p>
           <AiFillPhone />
           <p>010-020-0340</p>
         </div>
-        <div className='flex items-center md:gap-2 gap-1'>
+        <div className='flex items-center gap-1 md:gap-2'>
           <AiFillFacebook />
           <AiFillInstagram />
           <AiFillTwitterCircle />
@@ -49,7 +49,7 @@ export function NavigationBar() {
 
         <div
           onClick={() => setIsOpen(!isOpen)}
-          className='md:hidden text-3xl absolute right-8 top-6 cursor-pointer'
+          className='absolute text-3xl cursor-pointer md:hidden right-8 top-6'
         >
           {isOpen ? <AiOutlineClose /> : <GiHamburgerMenu />}
         </div>
