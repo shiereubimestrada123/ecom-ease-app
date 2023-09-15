@@ -1,3 +1,11 @@
+import { Hero, Services, Brands } from '@features';
+
 export function AboutPage() {
-  return <div>AboutPage</div>;
+  return (
+    <>
+      <Hero />
+      <Services />
+      <Brands />
+    </>
+  );
 }

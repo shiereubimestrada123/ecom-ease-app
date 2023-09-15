@@ -1,14 +1,14 @@
 export function Categories() {
   return (
-    <div className='py-20 md:px-40 px-10 flex flex-col justify-center'>
+    <div className='flex flex-col justify-center px-10 py-20 md:px-40'>
       <div className='text-center'>
-        <p className='text-5xl font-extralight mb-5'>Categories of the Month</p>
+        <p className='mb-5 text-5xl font-extralight'>Categories of the Month</p>
         <p>
           Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
           officia deserunt mollit anim id est laborum.
         </p>
 
-        <div className='flex justify-evenly pt-20'>
+        <div className='flex pt-20 justify-evenly'>
           <div>
             <div className='h-[100px] w-[100px] bg-black rounded-full' />
             <p>Watches</p>
@@ -26,11 +26,6 @@ export function Categories() {
           </div>
         </div>
       </div>
-
-      {/* <div>
-        <div className='h-20 w-20 border-slate-950 rounded-full' />
-        <p>asdfsad</p>
-      </div> */}
     </div>
   );
 }
