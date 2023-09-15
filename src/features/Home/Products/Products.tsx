@@ -2,13 +2,13 @@ export function Products() {
   return (
     <div className='py-20 md:px-40 px-10 flex flex-col justify-center bg-[#e9eef5]'>
       <div className='text-center'>
-        <p className='text-5xl font-extralight mb-5'>Featured Product</p>
+        <p className='mb-5 text-5xl font-extralight'>Featured Product</p>
         <p>
           Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
           pariatur. Excepteur sint occaecat cupidatat non proident.
         </p>
 
-        <div className='flex justify-evenly pt-20 gap-4'>
+        <div className='flex gap-4 pt-20 justify-evenly'>
           <div className='w-full rounded-lg shadow-md lg:max-w-sm'>
             <img
               className='object-cover w-full h-48'
