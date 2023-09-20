@@ -2,16 +2,28 @@ import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { AiFillCloseSquare } from 'react-icons/ai';
 import { LoginForm } from '.';
+import { Button } from '@components';
+import { logoutUser } from '@store';
+import { useAppDispatch } from '@hooks';
 
 type LoginModalProps = {
   closeLoginDialog: () => void;
   isLoginDialogOpen: boolean;
+  token: string;
 };
 
 export function LoginModal({
   closeLoginDialog,
   isLoginDialogOpen,
+  token,
 }: LoginModalProps) {
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    closeLoginDialog();
+  };
+
   return (
     <>
       <Transition appear show={isLoginDialogOpen} as={Fragment}>
@@ -44,14 +56,31 @@ export function LoginModal({
                     as='h3'
                     className='flex items-center justify-between text-lg font-medium leading-6 text-gray-900'
                   >
-                    <p>Login</p>
+                    <p>{token ? 'Are you sure you want to logout' : 'Login'}</p>
                     <AiFillCloseSquare
                       className='w-10 h-10 cursor-pointer fill-tiber-900'
                       onClick={closeLoginDialog}
                     />
                   </Dialog.Title>
 
-                  <LoginForm closeLoginDialog={closeLoginDialog} />
+                  {token ? (
+                    <div className='flex justify-around mt-4'>
+                      <Button
+                        onClick={closeLoginDialog}
+                        type='button'
+                        text='No'
+                        className='inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
+                      />
+                      <Button
+                        onClick={handleLogout}
+                        type='button'
+                        text='Yes'
+                        className='inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
+                      />
+                    </div>
+                  ) : (
+                    <LoginForm closeLoginDialog={closeLoginDialog} />
+                  )}
                 </Dialog.Panel>
               </Transition.Child>
             </div>

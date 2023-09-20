@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { RootState } from '@store';
+// import { RootState } from '@store';
 
-interface UserState {
+type UserState = {
   token: string;
   isLoading: boolean;
   isError: boolean;
-}
+};
 
 const initialState: UserState = {
   token: localStorage.getItem('token') || '',
@@ -43,7 +43,6 @@ export const loginUser = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
-  // Clear the token from localStorage
   localStorage.removeItem('token');
 });
 
@@ -60,6 +59,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isError = false;
         state.token = action.payload.token;
       })
       .addCase(loginUser.rejected, (state) => {
@@ -85,6 +85,6 @@ const userSlice = createSlice({
   },
 });
 
-export const getUser = (state: RootState) => state.user;
+// export const getUser = (state: RootState) => state.user;
 
 export default userSlice.reducer;

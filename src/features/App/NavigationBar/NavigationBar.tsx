@@ -1,9 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import { useBoolean, useAppDispatch } from '@hooks';
-import { logoutUser } from '@store';
-
-import { useAppSelector } from '@hooks';
-
+import { useBoolean, useAppDispatch, useAppSelector } from '@hooks';
+// import { logoutUser } from '@store';
 import { LoginModal } from '.';
 
 import {
@@ -23,7 +20,12 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 
 import { cn } from '@utils';
 
+import { useState, Fragment } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+
 export function NavigationBar() {
+  const [isOpen, setIsOpen] = useState(true);
+
   const dispatch = useAppDispatch();
 
   const token = useAppSelector(({ user }) => user.token);
@@ -32,6 +34,7 @@ export function NavigationBar() {
   const {
     value: isLoginDialogOpen,
     toggle: toggleLoginDialog,
+    on: openLoginDialog,
     off: closeLoginDialog,
   } = useBoolean(false);
 
@@ -48,15 +51,17 @@ export function NavigationBar() {
 
   const navLinks = ['home', 'about', 'shop', 'contact'];
 
-  const handleOutLineUser = () => {
+  const handleLoginModal = () => {
     toggleLoginDialog();
     toggleHamburger();
   };
 
   const handleLogout = () => {
-    dispatch(logoutUser());
+    // dispatch(logoutUser());
 
     isHamburgerClose();
+
+    openLoginDialog();
   };
 
   return (
@@ -133,7 +138,7 @@ export function NavigationBar() {
             {token ? (
               <BiLogOut onClick={handleLogout} />
             ) : (
-              <BiLogIn onClick={handleOutLineUser} />
+              <BiLogIn onClick={handleLoginModal} />
             )}
           </li>
         </ul>
@@ -143,6 +148,7 @@ export function NavigationBar() {
         <LoginModal
           closeLoginDialog={closeLoginDialog}
           isLoginDialogOpen={isLoginDialogOpen}
+          token={token}
         />
       )}
     </nav>
