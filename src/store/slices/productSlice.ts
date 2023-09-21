@@ -1,60 +1,59 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { Product } from '@types';
 
-type CategoryState = {
-  categories: string[];
+type ProductState = {
+  products: Product[];
   isLoading: boolean;
   isError: boolean;
 };
 
-const initialState: CategoryState = {
-  categories: [],
+const initialState: ProductState = {
+  products: [],
   isLoading: false,
   isError: false,
 };
 
-export const fetchCategories = createAsyncThunk(
-  'category/fetchCategories',
+export const fetchProducts = createAsyncThunk(
+  'product/fetchProducts',
   async () => {
     // eslint-disable-next-line no-useless-catch
     try {
-      const response = await fetch(
-        'https://fakestoreapi.com/products/categories'
-      );
+      const response = await fetch('https://fakestoreapi.com/products');
 
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Login failed');
       }
 
-      const categoriesData = await response.json();
+      const productsData = await response.json();
 
-      return categoriesData;
+      return productsData;
     } catch (error) {
       throw error;
     }
   }
 );
 
-const categorySlice = createSlice({
-  name: 'category',
+const productSlice = createSlice({
+  name: 'product',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCategories.pending, (state) => {
+      .addCase(fetchProducts.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
       })
-      .addCase(fetchCategories.fulfilled, (state, action) => {
+      .addCase(fetchProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
-        state.categories = action.payload;
+        state.products = action.payload;
       })
-      .addCase(fetchCategories.rejected, (state) => {
+      .addCase(fetchProducts.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });
   },
 });
 
-export default categorySlice.reducer;
+export default productSlice.reducer;
