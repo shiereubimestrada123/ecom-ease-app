@@ -1,3 +1,3 @@
 export * from './Categories';
-export * from './CustomCarousel';
+export * from './Carousel';
 export * from './Products';

@@ -1,4 +1,5 @@
 import { useAppSelector } from '@hooks';
+import { Product } from '@types';
 
 export function Products() {
   const { products } = useAppSelector((state) => state.product);
@@ -13,7 +14,7 @@ export function Products() {
         </p>
 
         <div className='flex flex-wrap h-full gap-4 pt-20 justify-evenly'>
-          {products.map(({ id, image, title, description, price }) => (
+          {products.map(({ id, image, title, description, price }: Product) => (
             <div
               key={id}
               className='flex flex-col w-full bg-white rounded-lg shadow-md lg:max-w-sm'
@@ -31,8 +32,8 @@ export function Products() {
                 <p className='mb-2 overflow-hidden leading-normal whitespace-break-spaces overflow-ellipsis'>
                   {description}
                 </p>
-                <p className='mb-2 leading-normal'>{price}</p>
-                <div className='px-4 py-2'>
+                <div className='flex items-center justify-between px-4 py-2'>
+                  <p className='mb-2 leading-normal'>{`$${price}`}</p>
                   <button className='p-2 text-sm text-blue-100 bg-blue-500 rounded shadow'>
                     Add to Cart
                   </button>

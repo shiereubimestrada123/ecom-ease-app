@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 type CategoryState = {
   categories: string[];
@@ -45,11 +45,14 @@ const categorySlice = createSlice({
         state.isLoading = true;
         state.isError = false;
       })
-      .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.categories = action.payload;
-      })
+      .addCase(
+        fetchCategories.fulfilled,
+        (state, { payload }: PayloadAction<string[]>) => {
+          state.isLoading = false;
+          state.isError = false;
+          state.categories = payload;
+        }
+      )
       .addCase(fetchCategories.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;

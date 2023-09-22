@@ -1,110 +1,102 @@
+import { Fragment, useState, useEffect } from 'react';
+import { useAppSelector } from '@hooks';
+import { Tab } from '@headlessui/react';
+import { Product } from '@types';
+
 export function ProductLists() {
+  const { categories } = useAppSelector((state) => state.category);
+  const { products } = useAppSelector((state) => state.product);
+
+  useEffect(() => {
+    setFilteredProducts(products);
+  }, [products]);
+
+  const defaultCategory = 'All';
+  const allCategories = [defaultCategory, ...categories];
+
+  const [selectedCategory, setSelectedCategory] = useState(defaultCategory);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
+
+  const handleTabClick = (category: string) => {
+    setSelectedCategory(category);
+
+    if (category === defaultCategory) {
+      setFilteredProducts(products);
+    } else {
+      const filteredProduct = products.filter(
+        (product) => product.category === category
+      );
+      setFilteredProducts(filteredProduct);
+    }
+  };
+
   return (
-    <div className='px-2 py-2 md:px-20 md:py-5'>
-      <div className='flex justify-between gap-4 text-[#212529]'>
-        <div className='w-1/5'>
-          <h1>Categories</h1>
-          <ul>
-            <li>Gender</li>
-            <li>Sale</li>
-            <li>Product</li>
-          </ul>
-        </div>
-
-        <div className='w-4/5'>
-          <ul className='items-center justify-between md:flex'>
-            <div className='flex gap-4 mb-2 md:mb-0 md:gap-10'>
-              <li>All</li>
-              <li>Mens</li>
-              <li>Womens</li>
-            </div>
-
-            <input type='text' className='border' />
-          </ul>
-
-          <div className='flex flex-wrap justify-between gap-8 mt-4'>
-            <div className='w-full rounded-lg shadow-md lg:max-w-sm'>
-              <img
-                className='object-cover w-full h-48'
-                src='https://cdn.pixabay.com/photo/2022/08/18/09/20/houses-7394390__340.jpg'
-                alt='image'
-              />
-              <div className='p-4'>
-                <h4 className='text-xl font-semibold tracking-tight text-blue-600'>
-                  React Tailwind Card with Image
-                </h4>
-                <p className='mb-2 leading-normal'>
-                  react tailwind css card with image It is a long established
-                  fact that a reader will be distracted by the readable content.
-                </p>
-                <button className='px-4 py-2 text-sm text-blue-100 bg-blue-500 rounded shadow'>
-                  Read more
-                </button>
-              </div>
-            </div>
-
-            <div className='w-full rounded-lg shadow-md lg:max-w-sm'>
-              <img
-                className='object-cover w-full h-48'
-                src='https://cdn.pixabay.com/photo/2022/08/18/09/20/houses-7394390__340.jpg'
-                alt='image'
-              />
-              <div className='p-4'>
-                <h4 className='text-xl font-semibold tracking-tight text-blue-600'>
-                  React Tailwind Card with Image
-                </h4>
-                <p className='mb-2 leading-normal'>
-                  react tailwind css card with image It is a long established
-                  fact that a reader will be distracted by the readable content.
-                </p>
-                <button className='px-4 py-2 text-sm text-blue-100 bg-blue-500 rounded shadow'>
-                  Read more
-                </button>
-              </div>
-            </div>
-
-            <div className='w-full rounded-lg shadow-md lg:max-w-sm'>
-              <img
-                className='object-cover w-full h-48'
-                src='https://cdn.pixabay.com/photo/2022/08/18/09/20/houses-7394390__340.jpg'
-                alt='image'
-              />
-              <div className='p-4'>
-                <h4 className='text-xl font-semibold tracking-tight text-blue-600'>
-                  React Tailwind Card with Image
-                </h4>
-                <p className='mb-2 leading-normal'>
-                  react tailwind css card with image It is a long established
-                  fact that a reader will be distracted by the readable content.
-                </p>
-                <button className='px-4 py-2 text-sm text-blue-100 bg-blue-500 rounded shadow'>
-                  Read more
-                </button>
-              </div>
-            </div>
-
-            <div className='w-full rounded-lg shadow-md lg:max-w-sm'>
-              <img
-                className='object-cover w-full h-48'
-                src='https://cdn.pixabay.com/photo/2022/08/18/09/20/houses-7394390__340.jpg'
-                alt='image'
-              />
-              <div className='p-4'>
-                <h4 className='text-xl font-semibold tracking-tight text-blue-600'>
-                  React Tailwind Card with Image
-                </h4>
-                <p className='mb-2 leading-normal'>
-                  react tailwind css card with image It is a long established
-                  fact that a reader will be distracted by the readable content.
-                </p>
-                <button className='px-4 py-2 text-sm text-blue-100 bg-blue-500 rounded shadow'>
-                  Read more
-                </button>
-              </div>
-            </div>
+    <div className='flex gap-20 px-2 py-2 md:px-20 md:py-5'>
+      <Tab.Group>
+        <Tab.List>
+          <div className='flex flex-col'>
+            {allCategories.map((category) => (
+              <Tab key={category} as={Fragment}>
+                {({ selected }) => (
+                  <button
+                    onClick={() => handleTabClick(category)}
+                    className={
+                      selected
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-white text-black'
+                    }
+                  >
+                    {category}
+                  </button>
+                )}
+              </Tab>
+            ))}
           </div>
-        </div>
-      </div>
+        </Tab.List>
+        <Tab.Panels>
+          <div className='flex justify-between gap-8'>
+            {allCategories.map((category) => (
+              <Tab.Panel key={category}>
+                <div className='flex flex-wrap h-full gap-10 justify-evenly'>
+                  {filteredProducts
+                    .filter((product) =>
+                      category === defaultCategory
+                        ? true
+                        : product.category === category
+                    )
+                    .map((product: Product) => (
+                      <div
+                        key={product.id}
+                        className='flex flex-col w-full bg-white rounded-lg shadow-md lg:max-w-sm'
+                      >
+                        <img
+                          className='object-cover w-full h-48 rounded-lg'
+                          src={product.image}
+                          alt='image'
+                        />
+
+                        <div className='flex flex-col justify-between h-full p-4'>
+                          <h4 className='text-xl font-semibold tracking-tight text-blue-600'>
+                            {product.title}
+                          </h4>
+                          <p className='mb-2 overflow-hidden leading-normal whitespace-break-spaces overflow-ellipsis'>
+                            {product.description}
+                          </p>
+                          <div className='flex items-center justify-between px-4 py-2'>
+                            <p className='mb-2 leading-normal'>{`$${product.price}`}</p>
+                            <button className='p-2 text-sm text-blue-100 bg-blue-500 rounded shadow'>
+                              Add to Cart
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </Tab.Panel>
+            ))}
+          </div>
+        </Tab.Panels>
+      </Tab.Group>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Product } from '@types';
 
 type ProductState = {
@@ -44,11 +44,14 @@ const productSlice = createSlice({
         state.isLoading = true;
         state.isError = false;
       })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.products = action.payload;
-      })
+      .addCase(
+        fetchProducts.fulfilled,
+        (state, { payload }: PayloadAction<Product[]>) => {
+          state.isLoading = false;
+          state.isError = false;
+          state.products = payload;
+        }
+      )
       .addCase(fetchProducts.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
