@@ -2,6 +2,7 @@ import { Fragment, useState, useEffect } from 'react';
 import { useAppSelector } from '@hooks';
 import { Tab } from '@headlessui/react';
 import { Product } from '@types';
+import { categoriesDict } from '@constants';
 
 export function ProductLists() {
   const { categories } = useAppSelector((state) => state.category);
@@ -14,7 +15,8 @@ export function ProductLists() {
   const defaultCategory = 'All';
   const allCategories = [defaultCategory, ...categories];
 
-  const [selectedCategory, setSelectedCategory] = useState(defaultCategory);
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>(defaultCategory);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
 
   const handleTabClick = (category: string) => {
@@ -31,11 +33,11 @@ export function ProductLists() {
   };
 
   return (
-    <div className='flex gap-20 px-2 py-2 md:px-20 md:py-5'>
+    <div className='gap-20 px-2 py-2 md:flex md:px-20 md:py-5'>
       <Tab.Group>
         <Tab.List>
           <div className='flex flex-col'>
-            {allCategories.map((category) => (
+            {allCategories.map((category: string) => (
               <Tab key={category} as={Fragment}>
                 {({ selected }) => (
                   <button
@@ -46,7 +48,7 @@ export function ProductLists() {
                         : 'bg-white text-black'
                     }
                   >
-                    {category}
+                    {categoriesDict[category]}
                   </button>
                 )}
               </Tab>
@@ -59,7 +61,7 @@ export function ProductLists() {
               <Tab.Panel key={category}>
                 <div className='flex flex-wrap h-full gap-10 justify-evenly'>
                   {filteredProducts
-                    .filter((product) =>
+                    .filter((product: Product) =>
                       category === defaultCategory
                         ? true
                         : product.category === category

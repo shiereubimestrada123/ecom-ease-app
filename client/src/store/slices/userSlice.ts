@@ -1,13 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { Users } from '@types';
 // import { RootState } from '@store';
 
 type UserState = {
+  users: Users[];
   token: string;
   isLoading: boolean;
   isError: boolean;
 };
 
 const initialState: UserState = {
+  users: [],
   token: localStorage.getItem('token') || '',
   isLoading: false,
   isError: false,
@@ -46,6 +49,27 @@ export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
   localStorage.removeItem('token');
 });
 
+export const fetchAllUsers = createAsyncThunk(
+  'user/fetchAllUsers',
+  async () => {
+    // eslint-disable-next-line no-useless-catch
+    try {
+      const response = await fetch('https://fakestoreapi.com/users');
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Login failed');
+      }
+
+      const allUsers = await response.json();
+      console.log(allUsers);
+      return allUsers;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -81,10 +105,24 @@ const userSlice = createSlice({
       .addCase(logoutUser.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
+      })
+
+      // all users
+
+      .addCase(fetchAllUsers.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.users = action.payload;
+      })
+      .addCase(fetchAllUsers.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
       });
   },
 });
-
-// export const getUser = (state: RootState) => state.user;
 
 export default userSlice.reducer;

@@ -1,5 +1,6 @@
 import { useAppSelector } from '@hooks';
 import { Button } from '@components';
+import { categoriesDict } from '@constants';
 
 export function Categories() {
   const { categories } = useAppSelector((state) => state.category);
@@ -50,10 +51,10 @@ export function Categories() {
               <img
                 className='md:h-[350px] md:w-[350px] h-[75px] w-[75px] bg-black rounded-full mb-6'
                 src={c.path ?? undefined}
-                alt={c.category}
+                alt={categoriesDict[c.category]}
               />
 
-              <p>{c.category}</p>
+              <p>{categoriesDict[c.category]}</p>
               <Button
                 type='button'
                 text='Go Shop'
