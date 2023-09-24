@@ -62,7 +62,7 @@ export const fetchAllUsers = createAsyncThunk(
       }
 
       const allUsers = await response.json();
-      console.log(allUsers);
+
       return allUsers;
     } catch (error) {
       throw error;
